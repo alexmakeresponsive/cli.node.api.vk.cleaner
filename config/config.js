@@ -19,15 +19,22 @@ let urlsConf = {
     },
     wallGetPostsCount: {
         method: 'wall.get',
-        parameters: 'count='
+        parameters: {
+            count: 1
+        }
     },
     wallGetPosts: {
         method: 'wall.get',
-        parameters: 'count='
+        parameters: {
+            count: ''
+        }
     },
-    wallDeleteSingle: {
+    wallDeletePost: {
         method: 'wall.delete',
-        parameters: 'owner_id=' + userConf.userId + '&post_id='
+        parameters:  {
+            owner_id: userConf.userId,
+            post_id: '',
+        }
     }
 };
 

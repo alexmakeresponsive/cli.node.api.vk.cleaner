@@ -28,7 +28,7 @@ export default (data) => {
 
 
     // log(URLwallAddPostSingle(data));
-    axios.post( URLwallAddPostSingle(data) )
+    axios.get( URLwallAddPostSingle(data) )
         .then( (response) => {
             log( 'Success: Post response from API' );
             return response.data;
