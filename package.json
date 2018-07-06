@@ -1,0 +1,13 @@
+{
+  "name": "MyVkHandlesWall-Node",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "n": "node app.js",
+    "bn": "babel-node app.js --presets latest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
