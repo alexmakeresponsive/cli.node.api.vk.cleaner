@@ -8,13 +8,22 @@ import colors from 'colors/safe';
 import wallAddPostSingle from './actions/wallAddPostSingle.js';
 import wallDeletePostAll from './actions/wallDeletePostAll.js';
 
+import dataPosts from './data/posts.js';
+
 
 prompt.start();
 
 prompt.get({
     properties: {
         choice: {
-            description: colors.green("What you want? \n 1 - delete all posts from wall \n 2 - add single post to wall \n 3 - exit")
+            description: colors.green(
+                `\n What you want?` +
+                `\n 1 - delete all posts from wall` +
+                `\n 2 - add single post to wall` +
+                `\n 3 - add multi posts to wall` +
+                `\n 4 - get posts count on wall` +
+                `\n 5 - exit`
+            )
         }
     }
 }, function (err, result) {
@@ -25,9 +34,27 @@ prompt.get({
             wallDeletePostAll();
             break;
         case 2:
-            wallAddPostSingle();
+            prompt.get({
+                properties: {
+                    text: {
+                        description: colors.green("Type text of message")
+                    }
+                }
+            }, function (err, result) {
+                wallAddPostSingle(result.text);
+            });
             break;
         case 3:
+            // log(dataPosts());
+
+            dataPosts().forEach(function (post) {
+                wallAddPostSingle(post.message);
+            });
+            break;
+        case 4:
+            log('Show posts count on wall');
+            break;
+        case 5:
             log('See you later!');
             break;
         default:
@@ -35,6 +62,9 @@ prompt.get({
             break;
     }
 });
+
+
+
 
 
 // const app = express();
