@@ -1,4 +1,5 @@
 import { log } from '../utils/log.js';
+import { timerStart, timerStop, timerTimePassed } from '../utils/simpleTimer.js';
 import axios from 'axios';
 import { userConf, vkConf, urlsConf } from '../config/config.js';
 
@@ -61,14 +62,50 @@ export default () => {
 
         return Promise.all( arr )
             .then(results => {
+                timerStop();
                 log('Delete: posts end');
-        });
+                deletePostsStarter();
+            })
+            .catch( (error) => {
+                log( 'Error:' );
+                log(error);
+            });
     };
 
 
+    let deletePostsStarter = () => {
+        let delay;
 
+        if ( timerTimePassed < 1000 ) {
+            delay = 1000 - timerTimePassed + 100;
+        } else {
+            delay = timerTimePassed % 1000 + 100;
+        }
 
+        //Check post from API
+        axios.get( URLwallGetPostsCount(1) )
+            .then( (response) => {
+                log( 'Success: Get posts count from API' );
+                return response.data;
+            })
+            .then( (data) => {
+                if ( data.response.count > 0 ) {
+                    store.postsCount = data.response.count;
 
+                    log( 'Starter: delay = ' + delay );
+
+                    setTimeout(function() {
+                        getPostsId();
+                    }, delay);
+                } else {
+                    log( 'Starter: Posts not found' );
+                }
+            })
+            .catch( (error) => {
+                log( 'Error:' );
+                log(error);
+            });
+    };
 
 
     let getPostsId = () => {
@@ -87,6 +124,7 @@ export default () => {
             })
             .then( () => {
                 log('Delete: posts started');
+                timerStart();
                 deletePosts();
             })
             .catch( (error) => {
@@ -112,7 +150,7 @@ export default () => {
             log('Store: count of posts = ' + store.postsCount);
         })
         .then( () => {
-            getPostsId();
+            deletePostsStarter();
         })
         .catch( (error) => {
             log( 'Error:' );
