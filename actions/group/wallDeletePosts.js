@@ -122,7 +122,8 @@ export default () => {
                 if(response.data.response) {
                     log( 'deletePostsStarter: get count posts from API' );
                 } else {
-                    throw new Error(response.data);
+                    // log(response.data);
+                    throw new Error(response.data.error.error_msg);
                 }
                 return response.data;
             })
@@ -149,7 +150,8 @@ export default () => {
             if(response.data.response) {
                 log( 'get count posts from API' );
             } else {
-                throw new Error(response.data);
+                // log(response.data);
+                throw new Error(response.data.error.error_msg);
             }
             return response.data;
         })
