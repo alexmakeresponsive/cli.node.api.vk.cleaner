@@ -1,7 +1,7 @@
 import { log } from './log.js';
 
-let counterValue;
-let timerTimePassed;
+let counterValue    = 0;
+let timerTimePassed = 0;
 let timerFrequency  = 10;
 let timerBox        = {};
 

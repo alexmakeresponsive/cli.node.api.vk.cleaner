@@ -1,6 +1,6 @@
-import { log } from '../utils/log.js';
+import { log } from '../../utils/log.js';
 import axios from 'axios';
-import { userConf, vkConf, urlsConf } from '../config/config.js';
+import { userConf, vkConf, urlsConf } from '../../config/user/config.js';
 
 export default (data) => {
     let urlConstructor = ( method, parameters, data ) => {

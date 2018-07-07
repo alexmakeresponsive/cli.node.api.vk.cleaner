@@ -1,8 +1,8 @@
 import express from 'express';
 import axios from 'axios';
 const app = express();
-import { userConf, vkConf, urlsConf } from '../config/config.js';
-import { log } from '../utils/log.js';
+import { userConf, vkConf, urlsConf } from '../../config/user/config.js';
+import { log } from '../../utils/log.js';
 
 
 export default () => {

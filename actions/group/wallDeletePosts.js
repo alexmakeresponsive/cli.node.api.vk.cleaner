@@ -1,7 +1,7 @@
-import { log } from '../utils/log.js';
-import { timerStart, timerStop, timerTimePassed } from '../utils/simpleTimer.js';
+import { log } from '../../utils/log.js';
+import { timerStart, timerStop, timerTimePassed } from '../../utils/simpleTimer.js';
 import axios from 'axios';
-import { userConf, vkConf, urlsConf } from '../config/config.js';
+import { userConf, vkConf, urlsConf } from '../../config/group/config.js';
 
 export default () => {
     let urlConstructor = ( method, parameters, number ) => {
@@ -85,7 +85,7 @@ export default () => {
         //Check post from API
         axios.get( URLwallGetPostsCount(1) )
             .then( (response) => {
-                log( 'Success: Get posts count from API' );
+                log( 'Starter: Get posts count from API' );
                 return response.data;
             })
             .then( (data) => {
