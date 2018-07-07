@@ -76,7 +76,7 @@ export default (dataEntry) => {
         let delay;
 
         if ( timerTimePassed < 1000 && timerTimePassed !== 0 ) {
-            delay = 1000 - timerTimePassed + 100;
+            delay = 500 - timerTimePassed + 100;
         } else if ( timerTimePassed === 0 ) {
             delay = 0;
         } else {
@@ -86,9 +86,9 @@ export default (dataEntry) => {
         if ( store.dataEntryPrepareNext.length === 0 ) {
              store.dataEntryPrepareNext = dataEntry;
         } else {
-             store.dataEntryPrepareNext = store.dataEntryPrepareNext.slice(4 , store.dataEntryPrepareNext.length);
+             store.dataEntryPrepareNext = store.dataEntryPrepareNext.slice(1 , store.dataEntryPrepareNext.length);
         }
-             store.dataEntryPrepare     = store.dataEntryPrepareNext.slice(0,4);
+             store.dataEntryPrepare     = store.dataEntryPrepareNext.slice(0,1);
 
         log( 'Starter: dataEntryPrepare:' );
         log( store.dataEntryPrepare );

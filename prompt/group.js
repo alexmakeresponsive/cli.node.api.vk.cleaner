@@ -3,7 +3,7 @@ import colors from 'colors/safe';
 
 
 import wallAddPosts from '../actions/group/wallAddPosts.js';
-import wallDeletePostAll from '../actions/group/wallDeletePosts.js';
+import wallDeletePosts from '../actions/group/wallDeletePosts.js';
 import wallDataShowBrowser from '../actions/group/wallDataShowBrowser.js';
 
 
@@ -28,7 +28,7 @@ export default () => {
     }, function (err, result) {
         switch (+result.choice) {
             case 1:
-                wallDeletePostAll();
+                wallDeletePosts();
                 break;
             case 2:
                 prompt.get({

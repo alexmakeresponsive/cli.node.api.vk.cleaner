@@ -2,6 +2,7 @@ import { log } from '../../utils/log.js';
 import { timerStart, timerStop, timerTimePassed } from '../../utils/simpleTimer.js';
 import axios from 'axios';
 import { userConf, vkConf, urlsConf } from '../../config/group/config.js';
+import colors from 'colors/safe';
 
 export default () => {
     let urlConstructor = ( method, parameters, number ) => {
@@ -35,7 +36,6 @@ export default () => {
 
 
     let store = {
-        postsCount: 0,
         posts: [],
         postsId: []
     };
@@ -73,45 +73,16 @@ export default () => {
     };
 
 
-    let deletePostsStarter = () => {
-        let delay;
-
-        if ( timerTimePassed < 1000 ) {
-            delay = 1000 - timerTimePassed + 100;
-        } else {
-            delay = timerTimePassed % 1000 + 100;
-        }
-
-        //Check post from API
-        axios.get( URLwallGetPostsCount(1) )
-            .then( (response) => {
-                log( 'Starter: Get posts count from API' );
-                return response.data;
-            })
-            .then( (data) => {
-                if ( data.response.count > 0 ) {
-                    store.postsCount = data.response.count;
-
-                    log( 'Starter: delay = ' + delay );
-
-                    setTimeout(function() {
-                        getPostsId();
-                    }, delay);
-                } else {
-                    log( 'Starter: Posts not found' );
-                }
-            })
-            .catch( (error) => {
-                log( 'Error:' );
-                log(error);
-            });
-    };
-
-
     let getPostsId = () => {
+        // log( URLwallGetPosts(4) );
+
         axios.get( URLwallGetPosts(4) )
             .then( (response) => {
-                log( 'Success: Get post for process' );
+                log( 'getPostsId: Get 4 posts from API' );
+                if ( response.data.response.items.length === 0 ) {
+                    log(response);
+                    throw new Error("Items not found");
+                }
                 return response.data;
             })
             .then( (data) => {
@@ -120,10 +91,10 @@ export default () => {
                 });
             })
             .then( () => {
-                log('Store: posts ID = ' + store.postsId);
+                log('getPostsId: posts ID = ' + store.postsId);
             })
             .then( () => {
-                log('Delete: posts started');
+                log('getPostsId: posts delete started');
                 timerStart();
                 deletePosts();
             })
@@ -134,20 +105,60 @@ export default () => {
     };
 
 
+    let deletePostsStarter = () => {
+        let delay;
+
+        if ( timerTimePassed < 1000 && timerTimePassed !== 0 ) {
+            delay = 1000 - timerTimePassed + 100;
+        } else if ( timerTimePassed === 0 ) {
+            delay = 0;
+        } else {
+            delay = timerTimePassed % 1000 + 100;
+        }
+
+        //Check post from API
+        axios.get( URLwallGetPostsCount(1) )
+            .then( (response) => {
+                if(response.data.response) {
+                    log( 'deletePostsStarter: get count posts from API' );
+                } else {
+                    throw new Error(response.data);
+                }
+                return response.data;
+            })
+            .then( (data) => {
+                if ( data.response.count > 0 ) {
+                    log( 'deletePostsStarter: delay = ' + delay );
+
+                    setTimeout(function() {
+                        getPostsId();
+                    }, delay);
+                } else {
+                    log( 'deletePostsStarter: Posts not found' );
+                }
+            })
+            .catch( (error) => {
+                log( 'Error:' );
+                log(error);
+            });
+    };
+
+
     axios.get( URLwallGetPostsCount(1) )
         .then( (response) => {
-            log( 'Success: Get response from API' );
+            if(response.data.response) {
+                log( 'get count posts from API' );
+            } else {
+                throw new Error(response.data);
+            }
             return response.data;
         })
         .then( (data) => {
             if ( data.response.count > 0 ) {
-                store.postsCount = data.response.count;
+                log('count of posts = ' + data.response.count);
             } else {
                 log( 'Posts not found' );
             }
-        })
-        .then( () => {
-            log('Store: count of posts = ' + store.postsCount);
         })
         .then( () => {
             deletePostsStarter();

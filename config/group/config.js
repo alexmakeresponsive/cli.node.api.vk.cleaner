@@ -32,6 +32,7 @@ let urlsConf = {
     wallGetPosts: {
         method: 'wall.get',
         parameters: {
+            owner_id: userConf.groupId,
             count: ''
         }
     },

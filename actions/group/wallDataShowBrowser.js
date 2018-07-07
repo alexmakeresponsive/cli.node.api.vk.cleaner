@@ -26,7 +26,7 @@ export default () => {
     let URLwallGetPostsCount = (data) => urlConstructor( urlsConf.wallGetPostsCount.method, urlsConf.wallGetPostsCount.parameters, data );
 
 
-    log('URLwallGetPostsCount = ' + URLwallGetPostsCount(''));
+    // log('URLwallGetPostsCount = ' + URLwallGetPostsCount(''));
 
     app.get('/', (req, res) => {
         axios.get( URLwallGetPostsCount('') )
